@@ -4,6 +4,7 @@ import random
 import math
 import time
 from codelib import *
+from colors import *
 
 """
 Input - input the user's choice of categories and letters
@@ -30,7 +31,9 @@ vowels = ["A","E","I","O","U"]
 		
 music_play()
 print("Ladies and gentlemen, the star of our show is . . .")  # Output - Display fun things on the screen 
-print(". . . YOU!  ")
+
+print(CRED + ". . . YOU!  " + CEND) # from file that contains constant colors
+
 contestant = input("Your name, please: ")
 
 tries = 0
@@ -59,7 +62,7 @@ while play_again :
 	print("1. Situation Comedies")
 	print("2. Top Places to Visit in America")
 	print("3. Fun activities for students at college")
-	print("4. Exit")
+	print(CRED + "4. Exit" + CEND)
 
 	number = -1
 	in_filename = ""
@@ -106,7 +109,8 @@ while play_again :
 		prize_slot  = random.randrange(1,25) 
 		
 		prize = wheel[prize_slot]  # select the prize envelope from the bonus round wheel
-		print("Ok, I have the envelope.  You can't see what it is.\nOur beautiful assistant, Vanna Github, will display the board for you.")
+		print("Ok, I have the envelope.  You can't see what it is.\nOur beautiful assistant, ", end="")
+		print(CYELLOW + "Vanna Github" + CEND + ", will display the board for you.")
 		
 		# set up the board
 		
@@ -224,9 +228,10 @@ while play_again :
 				print("That's $" + str(salary) + " per guess!!")
 		else :  # too many tries
 			buzz()
-			print(contestant + ", You LOST! You ran out of time. The answer was " + puzzle)
+			print(contestant + ", " + CBLINK  + " You LOST! " + CEND)
+			print("You ran out of time. The answer was " + puzzle)
 			print("Your prize would have been ", end="")
-			print(prize)
+			print(CBLINK + CGREEN  + prize + CEND)
 			salary = prize = 0
 			
 		print("Now, let's have some fun with your money. ")
