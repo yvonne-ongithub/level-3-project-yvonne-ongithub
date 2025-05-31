@@ -38,7 +38,7 @@ display_rules = input("Would you like to see the rules (Yes or No)? ")
 display_rules = display_rules[0].upper()
 
 while display_rules == "N" :
-    tries += 1 
+	tries += 1 
 	if tries <= 3  :
 		print("Answer yes or no.") 
 		display_rules = input("Would you like to see the rules (Yes or No)? ")
@@ -49,9 +49,9 @@ if tries >=3 or display_rules == "Y" :
 print("Ready for the final and bonus round", end="")	
 dots = 0
 while dots < 3: 
-    dots +=1
+	dots +=1
 	print(". ", end="")
-    time.sleep(1)
+	time.sleep(1)
 	
 print("The categories are: ")
 print("1. Situation Comedies")
@@ -64,12 +64,12 @@ in_filename = ""
 time_to_exit =  False
 
 while number < 1 or number > 4 :
-    number = int(input("Enter a number for your choice--between 1 and 4, inclusive. "))
-
+	number = int(input("Enter a number for your choice--between 1 and 4, inclusive. "))
+	
 	if number == 4 : 
 		print ("It's been fun! See you next time.")
 		time_to_exit = True;
-	else
+	else :
 		match number:
 			case 1: 
 				in_filename = "sitcoms.csv"
@@ -78,7 +78,7 @@ while number < 1 or number > 4 :
 			case 3:
 				in_filename = "activities.csv"
 				
-if !time_to_exit :
+if not time_to_exit :
 # CSV Files - read in the choices for the puzzle category and store them the list named data
 	# Read the CSV file
 	with open(in_filename, mode='r') as infile: # Functions -  file handling
@@ -94,7 +94,8 @@ if !time_to_exit :
 	
 	puzzle = data[puzzle_number]  	# Variable - Store user guesses 
 	puzzle_len = len(puzzle)
-	answer[puzzle_len] = ""         # initialize user guess
+
+	answer = ['' for j in range(puzzle_len+1)]     # initialize user guess
 		
 	generate_entries(wheel)  
 	
@@ -106,7 +107,8 @@ if !time_to_exit :
 	
 	# set up the board
     
-	for char_answer, i in enumerator(puzzle):    	# Datacamp enumerator
+	for char_answer, i in enumerate(puzzle):    	# Datacamp enumerator
+		
 		if puzzle[i] == " " :     # fill in the blanks in the puzzle
 			answer[i] = puzzle[i]    
 		else :
@@ -117,11 +119,10 @@ if !time_to_exit :
 	print("We will fill in the most popular letters in your puzzle. They are: " +  initial_guess)
 
 	for letter in initial_guess :
-	    locations = find_all_indexes(puzzle,letter)   # what are the indexes of the letter in puzzle?
+		locations = find_all_indexes(puzzle,letter)   # what are the indexes of the letter in puzzle?
 		if locations.len > 0 :
-		  for all i in locations :
-	    	  answer[i] = letter
-			  
+			for i in locations :
+				answer[i] = letter
 			  
 	print(answer)    ##### TAKE THIS OUT AFTER TESTING		  
 			  
@@ -146,7 +147,7 @@ if !time_to_exit :
 
 	new_guess = input("Now, guess a vowel.")
 	good_guess = False
-	while !good_guess :
+	while not good_guess :
 		if new_guess in used_letters :
 			buzz()
 			print("You used that one already.")	
@@ -161,11 +162,11 @@ if !time_to_exit :
 
 
 	for letter in guessarray :
-	    locations = find_all_indexes(puzzle,letter)   # what are the indexes of the letter in puzzle?
+		locations = find_all_indexes(puzzle,letter)   # what are the indexes of the letter in puzzle?
 		if locations.len > 0 :
-		  used_letters += letter
-		  for all i in locations :
-	    	  answer[i] = letter
+			used_letters += letter
+			for i in locations :
+				answer[i] = letter
 
 	print("OK, here are your guesses: " + guessarray)
 
@@ -173,7 +174,7 @@ if !time_to_exit :
 		
 	tries = 0
 	solved = False
-	while tries < 4 or !solved :     	#guess a letter that has not been used:
+	while tries < 4 or not solved :     	#guess a letter that has not been used:
 		new_guess = input("Guess a letter or guess the answer:  ")
 		tries += 1
 		if len(new_guess) == 1  # single letter
@@ -186,12 +187,12 @@ if !time_to_exit :
 				locations = find_all_indexes(puzzle,new_guess) 
 				if locations.len > 0 :
 					used_letters += new_guess
-					for all i in locations :
+					for i in locations :
 						answer[i] = letter
 					print_board(answer)
 		elif new_guess == puzzle :  # this is a guess at the answer
-			print("Your guess was " + new_guess + " and the puzzle was " + puzzle")
-			solved = true
+			print("Your guess was " + new_guess + " and the puzzle was " + puzzle)
+			solved = True
 		else :
 			print("No, keep guessing")
 			
