@@ -208,17 +208,17 @@ if not time_to_exit :
 			salary = prize / tries
 			print("a prize of " + prize " means you made $" + str(salary) + " per guess!!")
 		elif prize ==  "vacation" :
-		    print("this vacation is a charming visit to Acapulco, worth $30,000!! ")
+			print("this vacation is a charming visit to Acapulco, worth $30,000!! ")
 			salary = 30000 / tries
 			print("That's $" + str(salary) + " per guess!!")
 		elif "boat" in prize :
-		    print("this 6-passenger Tahoe sports boat is built to perform. Its POWERGLIDE® hull design and  7-inch GPS touch screen will bring a new dimension to all your waterskiing trips. This incredible speed boat is valued at $29,670.")
+			print("this 6-passenger Tahoe sports boat is built to perform. Its POWERGLIDE® hull design and  7-inch GPS touch screen will bring a new dimension to all your waterskiing trips. This incredible speed boat is valued at $29,670.")
 			salary = 29670 / tries
 			print("That's $" + str(salary) + " per guess!!")
-		else
-         print("this Dodge " + prize + is worth $58,000!!")  
-		 salary = 58000/tries
-		 print("That's $" + str(salary) + " per guess!!")
+		else :
+			print("this Dodge " + prize + " is worth $58,000!!")  
+			salary = 58000/tries
+			print("That's $" + str(salary) + " per guess!!")
 	else :  # too many tries
 		buzz()
 		print(contestant + ", You LOST! You ran out of time. The answer was " + puzzle)
@@ -229,11 +229,11 @@ if not time_to_exit :
 	print("Now, let's have some fun with your money. ")
 	mathfun(salary, tries)
 	print(contestant + ", that's pretty good.")
-else :   time to exit
+else :  #  time to exit
 	print("Thanks for playing! Goodbye, " + contestant + "!")
 	
 print("Goodnight, everybody!!")
 	
 	
 	
-	print("play again?")
+print("play again?")
