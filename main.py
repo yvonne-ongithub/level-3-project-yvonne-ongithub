@@ -1,10 +1,11 @@
 import csv
 import datetime
-import random
 import math
+import random
 import time
 from codelib import *
 from colors import *
+from playsound3 import playsound
 
 """
 Input - input the user's choice of categories and letters
@@ -20,6 +21,7 @@ Lists - store the choices for the puzzle categories
 While - while the user has not completed guessing the puzzle answer and has not run out of guesses
 CSV Files - read in the choices for each puzzle category and store them in lists
 """
+bell = "\a"
 
 wheel = ['' for j in range(26)] # Creates a list with 26 empty strings, indexed as 0..25
 
@@ -184,19 +186,18 @@ while play_again :
 		while tries < 4 or not solved :     	#guess a letter that has not been used:
 			new_guess = input("Guess a letter or guess the answer:  ")
 			tries += 1
-			if len(new_guess) == 1  # single letter
-				if new_guess in used_letters :
-					buzz()
-					print("You used that one already.")
-				elif new_guess in puzzle :
-					dingding()
+			if len(new_guess) == 1  :  # single letter				if new_guess in used_letters :
+				buzz()
+				print("You used that one already.")
+			elif new_guess in puzzle :
+				dingding()
 		
-					locations = find_all_indexes(puzzle,new_guess) 
-					if locations.len > 0 :
-						used_letters += new_guess
-						for i in locations :
-							answer[i] = letter
-						print_board(answer)
+				locations = find_all_indexes(puzzle,new_guess) 
+				if locations.len > 0 :
+					used_letters += new_guess
+					for i in locations :
+						answer[i] = letter
+					print_board(answer)
 			elif new_guess == puzzle :  # this is a guess at the answer
 				print("Your guess was " + new_guess + " and the puzzle was " + puzzle)
 				solved = True
@@ -211,7 +212,7 @@ while play_again :
 			print(prize)
 			print("You realize of course, that ", end="")
 			# games that are primarily string handling are a little weak in the math department
-			if isnumeric(prize) :
+			if prize.isnumeric() :
 				salary = prize / tries
 				print("a prize of " + prize " means you made $" + str(salary) + " per guess!!")
 			elif prize ==  "vacation" :

@@ -1,12 +1,14 @@
+import random
+import math
+
 def print_board(answer):
-    character_count = 0
-    for letter in answer :
-        print (letter + " ", end="")
-		
-	    if letter == " " :
-	       character_count +=1
-		   if character_count > 3 :
-		      print()   # newline on screen
+	character_count = 0
+	for letter in answer :
+		print (letter + " ", end="")
+		if letter == " " :
+			character_count +=1
+			if character_count > 3 :
+				print()   # newline on screen
 	return
 			  
 def buzz():
@@ -15,19 +17,21 @@ def buzz():
 	return
 	
 def dingding():
-# dress this up with color and sound, if there is time
+	bell =  "\a"
+# dress this up with color and sound
 	print("DING DING DING!!!")
+	print(bell + bell + bell)
 	return
 	
 def music_play():
 # dress this up with color and sound, if there is time
-	i = 0;
+	bell =  "\a"
+	i = 0
 	for j in range(3):
 		while i <  4 :
-		
 			print("DEE, DIT DEE, DIT DEE DIT")
 			i +=1
-		print("DEEEE!!")
+		print(bell)
 	return
 
 def generate_entries(wheel) :
@@ -76,7 +80,7 @@ def mathfun(x,y):
 	next_text= input("Hit enter for a display of what your money can do!!")
 	print("The square root of your money is not evil, it's "+ str(s_root))
 	print("\nBetter than doubling your money, you can raise it to a power. ")
-	print(str(salary) + " to the " + str(tries) + "th power is " + str(x_pow))
+	print(str(x) + " to the " + str(y) + "th power is " + str(x_pow))
 	print("\nInstead of folding it in half, you can divide your money by the number of tries.")
 	print("Keeping the remainder and throwing away the rest gives you " + str(x_fmod))
 	print("\nAnd, you can share it with friends and family by using the greatest common denominator!")
