@@ -25,8 +25,6 @@ bell = "\a"
 
 wheel = ['' for j in range(26)] # Creates a list with 26 empty strings, indexed as 0..25
 
-print(wheel) # Output: ['', '', '', '', '']
-
 # initial letters of guess are NSTLR and E
 initial_guess = ["N","S","T","L","R","E"]
 vowels = ["A","E","I","O","U"]
@@ -47,15 +45,16 @@ while display_rules == "N" :
 	if tries <= 3  :
 		print("Answer yes or no.") 
 		display_rules = input("Would you like to see the rules (Yes or No)? ")
+		display_rules = display_rules[0].upper()
 	
-if tries >=3 or display_rules == "Y" :
+if tries >= 3 or display_rules == "Y" :
 	show_rules()  # Functions - screen displays
 	
-print("Ready for the final and bonus round", end="")	
+print("Ready for the final and bonus round", end="", flush=True)	
 dots = 0
 while dots < 3: 
 	dots +=1
-	print(". ", end="")
+	print(". ", end="", flush=True)
 	time.sleep(1)
 	
 play_again = True
@@ -96,9 +95,7 @@ while play_again :
 	# 	Lists - store the choices for the puzzle categories
 		header = data[0]
 		choices = len(data)   # number of entries in the array
-		
 		puzzle_number = random.randrange(1,choices) # Functions -  random number generator
-		print(puzzle_number + " is the index for " + data[puzzle_number])  ##### TAKE THIS OUT AFTER TESTING
 		
 		puzzle = data[puzzle_number]  	# Variable - Store user guesses 
 		puzzle_len = len(puzzle)
@@ -107,32 +104,35 @@ while play_again :
 			
 		generate_entries(wheel)  
 		
-		print("Now, spin the wheel: (a number between 1 and 24 tells us your prize)")
+		input("Now, spin the wheel by pressing enter: (a number between 1 and 24 tells us your prize)")
 		prize_slot  = random.randrange(1,25) 
 		
 		prize = wheel[prize_slot]  # select the prize envelope from the bonus round wheel
 		print("Ok, I have the envelope.  You can't see what it is.\nOur beautiful assistant, ", end="")
-		print(CYELLOW + "Vanna Github" + CEND + ", will display the board for you.")
+		print(CGREEN + "Vanna Github" + CEND + ", will display the board for you.")
 		
 		# set up the board
+		# this piece was originally intended to be code learned from Datacamp,
+		# but during development it was changed to code learned from w3schools
+		temp_answer =str(puzzle).upper()
+		original = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		hidden = "__________________________"
+		mytable = str.maketrans(original,hidden)
+		answer = temp_answer.translate(mytable)
 		
-		for char_answer, i in enumerate(puzzle):    	# Datacamp enumerator
-			
-			if puzzle[i] == " " :     # fill in the blanks in the puzzle
-				answer[i] = puzzle[i]    
-			else :
-				answer[i] = "_"
-		
+		print("The board is ...")
 		print_board(answer)
 			
-		print("We will fill in the most popular letters in your puzzle. They are: " +  initial_guess)
+		print("\nWe will fill in the most popular letters in your puzzle. \nThey are: " +  str(initial_guess))
 
-		for letter in initial_guess :
-			locations = find_all_indexes(puzzle,letter)   # what are the indexes of the letter in puzzle?
-			if locations.len > 0 :
+		for letter in str(initial_guess) :
+			locations = find_all_indexes(str(puzzle),letter)   # what are the indexes of the letter in puzzle?
+			if len(locations) > 0 :
 				for i in locations :
 					answer[i] = letter
-				
+			temp_answer = replace_char_list(answer, i, letter)
+			answer = temp_answer
+
 		print(answer)    ##### TAKE THIS OUT AFTER TESTING		  
 				
 		used_letters = ["E","L","N","R","S","T"]
@@ -214,7 +214,7 @@ while play_again :
 			# games that are primarily string handling are a little weak in the math department
 			if prize.isnumeric() :
 				salary = prize / tries
-				print("a prize of " + prize " means you made $" + str(salary) + " per guess!!")
+				print("a prize of " + prize +  " means you made $" + str(salary) + " per guess!!")
 			elif prize ==  "vacation" :
 				print("this vacation is a charming visit to Acapulco, worth $30,000!! ")
 				salary = 30000 / tries

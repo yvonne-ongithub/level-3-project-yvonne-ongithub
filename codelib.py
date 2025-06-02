@@ -1,7 +1,12 @@
 import random
 import math
 
+from colors import *
+
 def print_board(answer):
+
+	print(CGREENBG +CWHITE, end="")
+
 	character_count = 0
 	for letter in answer :
 		print (letter + " ", end="")
@@ -9,6 +14,7 @@ def print_board(answer):
 			character_count +=1
 			if character_count > 3 :
 				print()   # newline on screen
+	print(CEND)
 	return
 			  
 def buzz():
@@ -40,28 +46,32 @@ def generate_entries(wheel) :
 	increment = 3000
 	val = 0
 	
-	wheelsize = len(wheel)
-	for j in range(wheelsize):  # make sure the wheel is empty first.
-		wheel = ""
-		
+	wheelsize = len(wheel) # make sure the wheel is empty first.
+	wheel = ['' for j in range(wheelsize)] # Creates a list with empty strings
+	
 	wheel_entry = random.randrange(1,wheelsize) # Functions -  random number generator
-	while val < wheelsize+1  or money <= 100000 :    # 1..25
-		if wheel[wheel_entry]=="" :
+	
+	amount = 0
+	wheel_full = False
+	while not wheel_full :    # 1..25
+		if wheel[wheel_entry] == "" :
 			val += 1
-			wheel[wheel_entry] = money + (val-1)*increment
+			amount = money + (val-1)*increment
+			wheel[wheel_entry] = amount
+			if amount >= 100000 : 
+				wheel_full = True
 		wheel_entry = random.randrange(1,wheelsize) # Functions -  random number generator
  
 	val = 1
 	other_prizes = ["SUV", "vacation", "sportscar","speedboat"]
-	op=0;
+	op = 0;
 	
-	while val <= wheelsize :
-		if wheel{val} = "" :
+	while val < wheelsize :  
+		if wheel[val] == "" :
 			wheel[val] = other_prizes[op]
 			op +=1
 		val +=1
 		
-	print(wheel)   ##### TAKE THIS OUT AFTER TESTING
 	return (wheel)
 
 def show_rules():
@@ -77,7 +87,7 @@ def mathfun(x,y):
 	x_gcd = math.gcd(x, y)       # Returns the greatest common divisor of x and y.
 	
 	print("Who says game show contestants don't need to do math?")
-	next_text= input("Hit enter for a display of what your money can do!!")
+	next_text = input("Hit enter for a display of what your money can do!!")
 	print("The square root of your money is not evil, it's "+ str(s_root))
 	print("\nBetter than doubling your money, you can raise it to a power. ")
 	print(str(x) + " to the " + str(y) + "th power is " + str(x_pow))
@@ -87,6 +97,11 @@ def mathfun(x,y):
 	print("The gcd between your money and the guesses it took to earn it is " + str(x_gcd))
 	
 	return
+
+def replace_char_list(text, index, replacement):
+    list_text = list(text)
+    list_text[index] = replacement
+    return "".join(list_text)
 
 def find_all_indexes(main_string, substring):
     """
