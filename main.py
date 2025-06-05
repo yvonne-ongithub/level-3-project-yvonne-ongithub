@@ -28,6 +28,7 @@ wheel = ['' for j in range(26)] # Creates a list with 26 empty strings, indexed 
 # initial letters of guess are NSTLR and E
 initial_guess = ["N","S","T","L","R","E"]
 vowels = ["A","E","I","O","U"]
+categories = ["Situation Comedies", "Top Places to Visit in America","Fun activities for students at college","Exit"]
 		
 music_play()
 print("Ladies and gentlemen, the star of our show is . . .")  # Output - Display fun things on the screen 
@@ -60,10 +61,13 @@ while dots < 3:
 play_again = True
 while play_again :
 	print("The categories are: ")
-	print("1. Situation Comedies")
-	print("2. Top Places to Visit in America")
-	print("3. Fun activities for students at college")
-	print(CRED + "4. Exit" + CEND)
+	for k, category_name in enumerate(categories) : # Datacamp
+		c_index = k+1
+		if c_index == 4 :
+			print(CRED, end="")
+		print(str(c_index)+ ". " + category_name)
+		if c_index == 4 :
+			print(CEND)
 
 	number = -1
 	in_filename = ""
@@ -98,23 +102,28 @@ while play_again :
 		puzzle_number = random.randrange(1,choices) # Functions -  random number generator
 		
 		puzzle = data[puzzle_number]  	# Variable - Store user guesses 
+		puzzle = str(puzzle).upper()
 		puzzle_len = len(puzzle)
 
 		answer = ['' for j in range(puzzle_len+1)]     # initialize user guess
 			
-		generate_entries(wheel)  
+		wheel = generate_entries(wheel)  
 		
 		input("Now, spin the wheel by pressing enter: (a number between 1 and 24 tells us your prize)")
 		prize_slot  = random.randrange(1,25) 
-		
+	
 		prize = wheel[prize_slot]  # select the prize envelope from the bonus round wheel
-		print("Ok, I have the envelope.  You can't see what it is.\nOur beautiful assistant, ", end="")
+	
+		print("Ok, I have the envelope.  You can't see what it is.")
+		print("The category you chose was "+ str(categories[number-1]))
+		
+		print("\nOur beautiful assistant, ", end="")
 		print(CGREEN + "Vanna Github" + CEND + ", will display the board for you.")
 		
 		# set up the board
 		# this piece was originally intended to be code learned from Datacamp,
 		# but during development it was changed to code learned from w3schools
-		temp_answer =str(puzzle).upper()
+		temp_answer = str(puzzle)
 		original = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 		hidden = "__________________________"
 		mytable = str.maketrans(original,hidden)
@@ -124,24 +133,17 @@ while play_again :
 		print_board(answer)
 			
 		print("\nWe will fill in the most popular letters in your puzzle. \nThey are: " +  str(initial_guess))
-
-		for letter in str(initial_guess) :
-			locations = find_all_indexes(str(puzzle),letter)   # what are the indexes of the letter in puzzle?
-			if len(locations) > 0 :
-				for i in locations :
-					answer[i] = letter
-			temp_answer = replace_char_list(answer, i, letter)
-			answer = temp_answer
-
-		print(answer)    ##### TAKE THIS OUT AFTER TESTING		  
-				
 		used_letters = ["E","L","N","R","S","T"]
 
+		answer = update_answer(initial_guess,puzzle,used_letters,answer)
+		print_board(answer)   	  
+		
 		print("You get to guess three consonants and a vowel.")
 		guessletters = 0 
 		guessarray = []
-		while guessletters <  4 :
+		while guessletters <  3 :
 			new_guess = input("Guess a consonant that has not been used:  ")
+			new_guess = str(new_guess).upper()
 			if new_guess in used_letters :
 				buzz()
 				print("You used that one already.")	
@@ -153,10 +155,11 @@ while play_again :
 			else :
 				guessletters +=1
 				guessarray += new_guess
-
-		new_guess = input("Now, guess a vowel.")
+		
 		good_guess = False
 		while not good_guess :
+			new_guess = input("Now, guess a vowel:  ")
+			new_guess = str(new_guess).upper()
 			if new_guess in used_letters :
 				buzz()
 				print("You used that one already.")	
@@ -167,72 +170,78 @@ while play_again :
 				print("It has to be a vowel.")
 			else :
 				good_guess = True
-				guessarray += new_guess   # add vowel to list user letters
+				guessarray += new_guess   # add vowel to list of user letters
 
-
-		for letter in guessarray :
-			locations = find_all_indexes(puzzle,letter)   # what are the indexes of the letter in puzzle?
-			if locations.len > 0 :
-				used_letters += letter
-				for i in locations :
-					answer[i] = letter
-
-		print("OK, here are your guesses: " + guessarray)
-
+		answer = update_answer(guessarray,puzzle,used_letters,answer)
+	
+		print("OK, here are your guesses: " + str(guessarray))
+		
 		print_board(answer)
-			
+		print("*** "+ str(puzzle))
 		tries = 0
 		solved = False
-		while tries < 4 or not solved :     	#guess a letter that has not been used:
+		while tries < 4 and not solved :     	#guess a letter that has not been used:
 			new_guess = input("Guess a letter or guess the answer:  ")
+			new_guess = new_guess.upper()
 			tries += 1
-			if len(new_guess) == 1  :  # single letter				if new_guess in used_letters :
-				buzz()
-				print("You used that one already.")
-			elif new_guess in puzzle :
-				dingding()
-		
-				locations = find_all_indexes(puzzle,new_guess) 
-				if locations.len > 0 :
-					used_letters += new_guess
-					for i in locations :
-						answer[i] = letter
+			if len(new_guess) == 1  :  # single letter	
+				print("single letter "+ new_guess)		
+				if new_guess in used_letters :
+					buzz()
+					print("You used that one already.")
+				elif new_guess in puzzle :
+					print(new_guess + " in puzzle")		
+					dingding()
+					answer = update_answer(new_guess,puzzle,used_letters,answer)
 					print_board(answer)
-			elif new_guess == puzzle :  # this is a guess at the answer
-				print("Your guess was " + new_guess + " and the puzzle was " + puzzle)
+				else :
+					print("No, that's not in the puzzle.")
+					if new_guess not in used_letters :
+						used_letters += new_guess
+			elif new_guess == puzzle :   # this is a guess at the answer
+				print("Your guess was " + str(new_guess) + " and the puzzle was " + str(puzzle))
 				solved = True
 			else :
-				print("No, keep guessing")
+				print("guess again")
+				print("Your guess was " + str(new_guess) + " and the puzzle was " + str(puzzle))
 				
+				print("No, keep guessing")
+		
 		if solved :
 			dingding() 
 			dingding() 
 			dingding()
 			print ("YAY! " + contestant + " You have solved the puzzle! You win the prize! The prize is ", end="")
-			print(prize)
+			str_prize =  str(prize)                         # prize started out being a part of a list. Now it is a string
+			int_prize = int(str_prize)                      # prize ia also an integer now
+			if str_prize.isnumeric() : 
+				print(f"${int_prize:,.2f}") 
+			else :
+				print(str_prize)
+
 			print("You realize of course, that ", end="")
 			# games that are primarily string handling are a little weak in the math department
-			if prize.isnumeric() :
-				salary = prize / tries
-				print("a prize of " + prize +  " means you made $" + str(salary) + " per guess!!")
-			elif prize ==  "vacation" :
+			if str_prize.isnumeric() :
+				salary = int_prize / tries
+				print("A prize of " + f"${int_prize:.2f} means you made " + f"${int(salary):.2f}  per guess!!")
+			elif str_prize ==  "vacation" :
 				print("this vacation is a charming visit to Acapulco, worth $30,000!! ")
 				salary = 30000 / tries
-				print("That's $" + str(salary) + " per guess!!")
-			elif "boat" in prize :
+				print("That's " +  f"${int(salary):.2f} per guess!!")
+			elif "boat" in str_prize :
 				print("this 6-passenger Tahoe sports boat is built to perform. Its POWERGLIDE® hull design and  7-inch GPS touch screen will bring a new dimension to all your waterskiing trips. This incredible speed boat is valued at $29,670.")
 				salary = 29670 / tries
-				print("That's $" + str(salary) + " per guess!!")
+				print("That's " +  f"${int(salary):.2f} per guess!!")
 			else :
-				print("this Dodge " + prize + " is worth $58,000!!")  
+				print("this Dodge " + str_prize + " is worth $58,000!!")  
 				salary = 58000/tries
-				print("That's $" + str(salary) + " per guess!!")
+				print("That's $" +  f"${int(salary):,.2f} per guess!!")
 		else :  # too many tries
 			buzz()
 			print(contestant + ", " + CBLINK  + " You LOST! " + CEND)
 			print("You ran out of time. The answer was " + puzzle)
 			print("Your prize would have been ", end="")
-			print(CBLINK + CGREEN  + prize + CEND)
+			print(CBLINK + CGREEN  + str_prize + CEND)
 			salary = prize = 0
 			
 		print("Now, let's have some fun with your money. ")

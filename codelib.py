@@ -4,15 +4,16 @@ import math
 from colors import *
 
 def print_board(answer):
-
+	answer = answer
+	if len(answer) <=  0 :
+		print("something wrong with answer in print_board")
 	print(CGREENBG +CWHITE, end="")
-
 	character_count = 0
 	for letter in answer :
 		print (letter + " ", end="")
 		if letter == " " :
 			character_count +=1
-			if character_count > 3 :
+			if character_count > 2 :
 				print()   # newline on screen
 	print(CEND)
 	return
@@ -78,13 +79,32 @@ def show_rules():
 	print("Here's how to play Wheel of Fortune.")
 	print("blah blah blah")
 	return
-	
+
+
+def update_answer(guessarray,puzzle,used_letters,answer) :
+	temp_answer = answer
+	for letter in guessarray :
+		locations = find_all_indexes(str(puzzle).upper(),letter)   # what are the indexes of the letter in puzzle?
+		if len(locations) > 0 :
+			if letter not in used_letters :
+				used_letters += letter
+			for i in locations :
+				temp_answer = replace_char_list(answer, i, letter)
+				answer = temp_answer
+				
+	return	temp_answer
+				
 def mathfun(x,y):
 # Exploration of built-in math functions
+	x = int(x)
+	y = int(y)
+
 	s_root = math.sqrt(x)        # Returns the square root of x.
 	x_pow = math.pow(x, y)       # Returns x raised to the power of y. 
 	x_fmod = math.fmod(x, y)     # Returns the remainder of x/y. 
 	x_gcd = math.gcd(x, y)       # Returns the greatest common divisor of x and y.
+	
+	print(x + " Is how much you won, and " + y + " is how many tries it took to win.")
 	
 	print("Who says game show contestants don't need to do math?")
 	next_text = input("Hit enter for a display of what your money can do!!")
@@ -104,7 +124,7 @@ def replace_char_list(text, index, replacement):
     return "".join(list_text)
 
 def find_all_indexes(main_string, substring):
-    """
+	"""
     Finds all starting indexes of a substring within a main string.
 
     Args:
@@ -114,13 +134,16 @@ def find_all_indexes(main_string, substring):
     Returns:
         A list of integers, representing the starting indexes of all occurrences of the substring in the main string. 
         Returns an empty list if the substring is not found.
-    """
-    indexes = []
-    start_index = 0
-    while True:
-        index = main_string.find(substring, start_index)
-        if index == -1:
-            break  # Substring not found, exit loop
-        indexes.append(index)
-        start_index = index + 1  # Move to the next position after the found substring
-    return indexes
+	"""
+	indexes = []
+	start_index = 0
+	
+	searching = True
+	while searching:
+		index = main_string.find(substring, start_index)
+		if index == -1:
+			searching = False  # Substring not found, exit loop
+		else :
+			indexes.append(index)
+			start_index = index + 1  # Move to the next position after the found substring
+	return indexes
