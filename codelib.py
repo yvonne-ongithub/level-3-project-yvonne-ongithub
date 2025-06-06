@@ -84,7 +84,7 @@ def show_rules():
 def update_answer(guessarray,puzzle,used_letters,answer) :
 	temp_answer = answer
 	for letter in guessarray :
-		locations = find_all_indexes(str(puzzle).upper(),letter)   # what are the indexes of the letter in puzzle?
+		locations = find_all_indexes(puzzle,letter)   # what are the indexes of the letter in puzzle?
 		if len(locations) > 0 :
 			if letter not in used_letters :
 				used_letters += letter
@@ -104,7 +104,7 @@ def mathfun(x,y):
 	x_fmod = math.fmod(x, y)     # Returns the remainder of x/y. 
 	x_gcd = math.gcd(x, y)       # Returns the greatest common divisor of x and y.
 	
-	print(x + " Is how much you won, and " + y + " is how many tries it took to win.")
+	print(str(x) + " Is how much you won, and " + str(y) + " is how many tries it took to win.")
 	
 	print("Who says game show contestants don't need to do math?")
 	next_text = input("Hit enter for a display of what your money can do!!")
