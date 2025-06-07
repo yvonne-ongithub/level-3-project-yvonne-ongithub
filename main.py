@@ -5,7 +5,6 @@ import random
 import time
 from codelib import *
 from colors import *
-from playsound3 import playsound
 
 """
 Input - input the user's choice of categories and letters
@@ -22,6 +21,7 @@ While - while the user has not completed guessing the puzzle answer and has not 
 CSV Files - read in the choices for each puzzle category and store them in lists
 """
 bell = "\a"
+print('\a')
 
 wheel = ['' for j in range(26)] # Creates a list with 26 empty strings, indexed as 0..25
 
@@ -32,23 +32,26 @@ categories = ["Situation Comedies", "Top Places to Visit in America","Fun activi
 		
 music_play()
 print("Ladies and gentlemen, the star of our show is . . .")  # Output - Display fun things on the screen 
+dingpy.ding()
 
 print(CRED + ". . . YOU!  " + CEND) # from file that contains constant colors
 
-contestant = input("Your name, please: ")
+contestant = ""
+while len(contestant) < 1 :
+	contestant = input("Your name, please: ")
 
 tries = 0
 display_rules = input("Would you like to see the rules (Yes or No)? ")
 if len(display_rules) > 0 :
 	display_rules = display_rules[0].upper()
-
-while display_rules == "N" :
-	tries += 1 
-	if tries <= 3  :
-		print("Answer yes or no.") 
-		display_rules = input("Would you like to see the rules (Yes or No)? ")
-		if len(display_rules) > 0 :
-			display_rules = display_rules[0].upper()
+	
+	while display_rules not in "YN" and tries < 3 :
+		tries += 1 
+		if tries <= 3  :
+			print("Answer yes or no.") 
+			display_rules = input("Would you like to see the rules (Yes or No)? ")
+			if len(display_rules) > 0 :
+				display_rules = display_rules[0].upper()
 	
 if tries >= 3 or display_rules == "Y" :
 	show_rules()  # Functions - screen displays
@@ -63,7 +66,7 @@ while dots < 3:
 play_again = True
 while play_again :
 	print("The categories are: ")
-	for k, category_name in enumerate(categories) : # Datacamp
+	for k, category_name in enumerate(categories) : # Datacamp discusses the enumerate function
 		c_index = k+1
 		if c_index == 4 :
 			print(CRED, end="")
@@ -74,62 +77,67 @@ while play_again :
 	number = -1
 	in_filename = ""
 	time_to_exit =  False
+	str_number = ""
+	play_again = True
 
-	while number < 1 or number > 4 :
-		number = int(input("Enter a number for your choice--between 1 and 4, inclusive. "))
-		
-		if number == 4 : 
-			print ("It's been fun! See you next time.")
-			time_to_exit = True
-			play_again = False
-		else :
-			match number:
-				case 1: 
-					in_filename = "sitcoms.csv"
-				case 2:
-					in_filename = "places.csv"
-				case 3:
-					in_filename = "activities.csv"
-					
-	if not time_to_exit :
-	# CSV Files - read in the choices for the puzzle category and store them the list named data
-		# Read the CSV file
-		with open(in_filename, mode='r') as infile: # Functions -  file handling
-			reader = csv.reader(infile)
-			data = list(reader)
+	while len(str_number) < 1 :
+		str_number = input("Enter a number for your choice--between 1 and 4, inclusive. ")
+		if len(str_number) > 0 :
+			if str_number.isdigit() :  # only digits in the string makes it an integer
+				number = int(str_number)
+				if number == 4 : 
+					print ("It's been fun! See you next time.")
+					time_to_exit = True
+					play_again = False
+				elif number > 4 :   # erase bad answer
+					str_number = ""
+					print("Your choice should be between 1 and 4, inclusive.")
+				else :
+					match number:
+						case 1: 
+							in_filename = "sitcoms.csv"
+						case 2:
+							in_filename = "places.csv"
+						case 3:
+							in_filename = "activities.csv"
+						case _:
+							str_number = ""
+							print("Your choice should be between 1 and 4, inclusive.")
+			else : 
+				str_number = ""
+				print("Your choice should be a number between 1 and 4, inclusive.")
 
-	# 	Lists - store the choices for the puzzle categories
-		header = data[0]
-		choices = len(data)   # number of entries in the array
-		puzzle_number = random.randrange(1,choices) # Functions -  random number generator
-		
-		puzzle = data[puzzle_number]  	# Variable - Store user guesses 
+	if time_to_exit :   # shortest clause first.  This may differ from the standard of True clause first
+		play_again = False
+		print("Thanks for playing! Goodbye, " + contestant + "!")
+	else : 
+		choices = -1
+		puzzle = ""
+		puzzle = read_file(in_filename,choices,puzzle)
 		puzzle = str(puzzle).upper()
 		str_puzzle = "".join(puzzle)   # convert from list to string
-		str_puzzle = str_puzzle[1:-1]  # remove brackets
-		str_puzzle = str_puzzle[1:-1]  # remove squotes
-
+		str_puzzle = str_puzzle[2:-2]  # remove squotes and brackets
+	
 		puzzle_len = len(str_puzzle)
-		print("\n>>>" + str_puzzle, str(puzzle_len))
 		
 		answer = ['' for j in range(puzzle_len+1)]     # initialize user guess
 			
-		wheel = generate_entries(wheel)  
+		wheel = generate_entries(wheel)  # populate the wheel with prize money
 		
 		input("Now, spin the wheel by pressing enter: (a number between 1 and 24 tells us your prize)")
 		prize_slot  = random.randrange(1,25) 
 	
 		prize = wheel[prize_slot]  # select the prize envelope from the bonus round wheel
-		print(prize)
-		str_prize = prize
 		
+		str_prize = prize  # prizes can be integers or strings
+		int_prize = 0
 		if isinstance(str_prize, str):
 			if str_prize.isdigit() :  # only digits in the string makes it an integer
 				int_prize = prize
 		else :
 			int_prize = prize
 			
-		print(str_prize)
+		print(str_prize,' ', int_prize)
 
 		print("\nOk, I have the envelope.  You can't see what it is.")
 		print("The category you chose was "+ str(categories[number-1]))
@@ -141,8 +149,8 @@ while play_again :
 		# this piece was originally intended to be code learned from Datacamp,
 		# but during development it was changed to code learned from w3schools
 		temp_answer = str_puzzle
-		original = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-		hidden = "__________________________"
+		original = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"  # replace the original text with text that 
+		hidden = "__________________________"    # hides the letters on the screen
 		mytable = str.maketrans(original,hidden)
 		answer = temp_answer.translate(mytable)
 		
@@ -155,59 +163,26 @@ while play_again :
 		answer = update_answer(initial_guess,str_puzzle,used_letters,answer)
 		print_board(answer)
 
-		print("You get to guess three consonants and a vowel.")
-		guessletters = 0 
 		guessarray = []
-		while guessletters <  3 :
-			new_guess = input("Guess a consonant that has not been used:  ")
-			new_guess = str(new_guess).upper()
-			if new_guess in used_letters :
-				buzz()
-				print("You used that one already.")	
-			elif new_guess in guessarray  :
-				buzz()
-				print("You used that one already.")	
-			elif  new_guess in vowels :
-				print("Not yet - just consonants.")
-			else :
-				guessletters +=1
-				guessarray += new_guess
-		
-		good_guess = False
-		while not good_guess :
-			new_guess = input("Now, guess a vowel:  ")
-			new_guess = str(new_guess).upper()
-			if new_guess in used_letters :
-				buzz()
-				print("You used that one already.")	
-			elif new_guess in guessarray  :
-				buzz()
-				print("You used that one already.")	
-			elif  new_guess not in vowels :
-				print("It has to be a vowel.")
-			else :
-				good_guess = True
-				guessarray += new_guess   # add vowel to list of user letters
+		guessarray = get_guesses(used_letters, vowels)
 
 		answer = update_answer(guessarray,str_puzzle,used_letters,answer)
 	
 		print("OK, here are your guesses: " + str(guessarray))
 		
 		print_board(answer)
-		print("*** "+ str_puzzle)
+		
 		tries = 0
 		solved = False
-		while tries < 4 and not solved :     	#guess a letter that has not been used:
+		while tries < 5 and not solved :     	# 5 tries to guess a letter that has not been used:
 			new_guess = input("Guess a letter or guess the answer:  ")
 			new_guess = new_guess.upper()
 			tries += 1
 			if len(new_guess) == 1  :  # single letter	
-				print("single letter "+ new_guess)		
 				if new_guess in used_letters :
 					buzz()
 					print("You used that one already.")
 				elif new_guess in str_puzzle :
-					print(new_guess + " in puzzle")		
 					dingding()
 					answer = update_answer(new_guess,str_puzzle,used_letters,answer)
 					print_board(answer)
@@ -216,42 +191,32 @@ while play_again :
 					if new_guess not in used_letters :
 						used_letters += new_guess
 			elif new_guess == str_puzzle :   # this is a guess at the answer
-				print("Your guess was " + str(new_guess) + " and the puzzle was " + str_puzzle)
+				print("Your guess was " + str(new_guess))
 				solved = True
 			else :
 				print("guess again")
-				print("Your guess was " + str(new_guess) + " and the puzzle was " + str_puzzle)
+				print("Your guess was " + str(new_guess) )
 		
 		if solved :
 			dingding() 
 			dingding() 
 			dingding()
-			print ("YAY! " + contestant + " You have solved the puzzle! You win the prize! \nThe prize is ", end="")
-			
+			print ("YAY! " + contestant + " You have solved the puzzle! You win the prize!")
+			print("The prize is ", end="")
+			import dingpy
+
+			dingpy.ding()
 			if isinstance(str_prize, str):
 				if str_prize.isdigit() :  # only digits in the string makes it an integer
-					print(f"${int_prize:,.2f}") 
-			else :
-				print(str_prize)
+					print(f"${int_prize}") 
+				else :
+					print("a",str_prize)
+			else : # print integer
+				print(f"${int_prize}") 
 
 			print("You realize of course, that ", end="")
-			# games that are primarily string handling are a little weak in the math department
-			if isinstance(str_prize, str):
-				if str_prize.isdigit() :  # only digits in the string makes it an integer
-					salary = int_prize / tries
-					print("A prize of " + f"${int_prize:.2f} means you made " + f"${int(salary):.2f}  per guess!!")
-				elif str_prize ==  "vacation" :
-					print("this vacation is a charming visit to Acapulco, worth $30,000!! ")
-					int_prize = 30000
-				elif str_prize ==  "SUV" :
-					print("this Ford Sports Utility Vehicle is worth $60,000!! ")
-					int_prize = 60000
-				elif "boat" in str_prize :
-					print("this 6-passenger Tahoe sports boat is built to perform. Its POWERGLIDE® hull design and  7-inch GPS touch screen will bring a new dimension to all your waterskiing trips. This incredible speed boat is valued at $29,670.")
-					int_prize=29760
-				else :
-					print("this Dodge " + str_prize + " is worth $58,000!!") 
-					int_prize=58000 
+			int_prize = prize_description (str_prize,int_prize  ) 
+		
 			salary = int_prize/tries
 			print("That's " +  f"${int(salary):,.2f} per guess!!")
 		else :  # too many tries
@@ -259,14 +224,25 @@ while play_again :
 			print(contestant + ", " + CBLINK  + " You LOST! " + CEND)
 			print("You ran out of time. The answer was " + str_puzzle)
 			print("Your prize would have been ", end="")
-			print(CBLINK + CGREEN  + str_prize + CEND)
-			salary = int_prize = 0
+			print(CBLINK + CGREEN , end="")
+			if isinstance(str_prize, str):
+				if str_prize.isdigit() :  # only digits in the string makes it an integer
+					print(f"${int_prize}" , end="") 
+				else :
+					print(str_prize , end="")
+			else : # print integer
+				print(f"${int_prize}" , end="") 
+			print( CEND)
+
+			salary = 0
+			int_prize = 0
 			
-		print("Now, let's have some fun with your money. ")
+		print("Now, let's have some fun with your money.\n ")
+		# games that are primarily string handling are a little weak in the math department
+		
 		mathfun(int_prize, tries)
-		print(contestant + ", that's pretty good. \nDo you want to play again?")
-	else :  #  time to exit
-		play_again = False
-		print("Thanks for playing! Goodbye, " + contestant + "!")
-	
+		print(contestant + ", that's pretty good. ")
+		input("Hit enter.")
+		print("\nDo you want to play again?")
+
 print("Goodnight, everybody!!")

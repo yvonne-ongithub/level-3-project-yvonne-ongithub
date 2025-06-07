@@ -1,3 +1,4 @@
+import csv
 import random
 import math
 
@@ -42,7 +43,8 @@ def music_play():
 	return
 
 def generate_entries(wheel) :
-# prize money ranges from $40,000 to$100,000,in incrementsof$3000.  There is also a car, a boat, and a vacation to be given away.
+# prize money ranges from $40,000 to $100,000,in increments of $3000.  
+# There is also a car, a boat, and a vacation to be given away.
 	money = 40000
 	increment = 3000
 	val = 0
@@ -76,7 +78,7 @@ def generate_entries(wheel) :
 	return (wheel)
 
 def show_rules():
-	print("Here's how to play Wheel of Fortune.")
+	print(CVIOLET + "Here's how to play Wheel of Fortune." + CEND )
 	print("blah blah blah")
 	return
 
@@ -104,7 +106,8 @@ def mathfun(x,y):
 	x_fmod = math.fmod(x, y)     # Returns the remainder of x/y. 
 	x_gcd = math.gcd(x, y)       # Returns the greatest common divisor of x and y.
 	
-	print(str(x) + " Is how much you won, and " + str(y) + " is how many tries it took to win.")
+	print(f"${x}" , end="")
+	print(" is how much you won, and " + str(y) + " is how many tries it took to win.\n")
 	
 	print("Who says game show contestants don't need to do math?")
 	next_text = input("Hit enter for a display of what your money can do!!")
@@ -113,8 +116,10 @@ def mathfun(x,y):
 	print(str(x) + " to the " + str(y) + "th power is " + str(x_pow))
 	print("\nInstead of folding it in half, you can divide your money by the number of tries.")
 	print("Keeping the remainder and throwing away the rest gives you " + str(x_fmod))
-	print("\nAnd, you can share it with friends and family by using the greatest common denominator!")
-	print("The gcd between your money and the guesses it took to earn it is " + str(x_gcd))
+	input("Discouraged? NO! Keep going! Hit enter. ")
+	print("\nAnd, you can share your prize with friends and family by using the greatest common denominator!")
+	print("The GCD is the largest positive integer that divides two or more integers without leaving a remainder.")
+	print("The greatest common denominator between your money and the guesses it took to earn it is " + str(x_gcd) + "\n")
 	
 	return
 
@@ -122,6 +127,76 @@ def replace_char_list(text, index, replacement):
     list_text = list(text)
     list_text[index] = replacement
     return "".join(list_text)
+
+def read_file(in_filename,choices,puzzle) :
+# CSV Files - read in the choices for the puzzle category and store them the list named data
+# Read the CSV file
+	with open(in_filename, mode='r') as infile: # Functions -  file handling
+		reader = csv.reader(infile)
+		data = list(reader)
+
+# 	Lists - store the choices for the puzzle categories
+	header = data[0]
+	choices = len(data)   # number of entries in the array
+
+	puzzle_number = random.randrange(1,choices) # Functions -  random number generator
+	
+	puzzle = data[puzzle_number]  	# Variable - Store user guesses 
+	return puzzle	
+	
+def get_guesses(used_letters,vowels) :
+	print("You get to guess three consonants and a vowel.")
+	guessletters = 0 
+	guessarray = []
+	while guessletters <  3 :
+		new_guess = input("Guess a consonant that has not been used:  ")
+		new_guess = str(new_guess).upper()
+		if new_guess in used_letters :
+			buzz()
+			print("You used that one already.")	
+		elif new_guess in guessarray  :
+			buzz()
+			print("You used that one already.")	
+		elif  new_guess in vowels :
+			print("Not yet - just consonants.")
+		else :
+			guessletters +=1
+			guessarray += new_guess
+	
+	good_guess = False
+	while not good_guess :
+		new_guess = input("Now, guess a vowel:  ")
+		new_guess = str(new_guess).upper()
+		if new_guess in used_letters :
+			buzz()
+			print("You used that one already.")	
+		elif new_guess in guessarray  :
+			buzz()
+			print("You used that one already.")	
+		elif  new_guess not in vowels :
+			print("It has to be a vowel.")
+		else :
+			good_guess = True
+			guessarray += new_guess   # add vowel to list of user letters
+	return guessarray
+
+def prize_description (str_prize, int_prize  ) :
+	if isinstance(str_prize, str):
+		if str_prize ==  "vacation" :
+			print("this vacation is a charming visit to Acapulco, worth $30,000!! ")
+			int_prize = 30000
+		elif str_prize ==  "SUV" :
+			print("this Ford Sports Utility Vehicle is worth $60,000!! ")
+			int_prize = 60000
+		elif "boat" in str_prize :
+			print("this 6-passenger Tahoe sports boat is built to perform. Its POWERGLIDE® hull design and  7-inch GPS touch screen will bring a new dimension to all your waterskiing trips. This incredible speed boat is valued at $29,670.")
+			int_prize=29760
+		else :
+			print("this Dodge " + str_prize + " is worth $58,000!!") 
+			int_prize=58000
+	else : 
+		int_prize = int_prize
+	return int_prize
 
 def find_all_indexes(main_string, substring):
 	"""
