@@ -1,8 +1,7 @@
 import csv
+import emoji
 import random
 import math
-import sounddevice as sd
-import numpy as np
 
 from colors import *
 
@@ -20,40 +19,41 @@ def print_board(answer):
 				print()   # newline on screen
 	print(CEND)
 	return
-
-
-      
-def beep(frequency, duration, sample_rate=44100):
-	t = np.linspace(0, duration/1000, int(sample_rate * duration/1000), False)
-	tone = 0.5 * np.sin(frequency * t * 2 * np.pi)
-	sd.play(tone, sample_rate)
-	sd.wait()
-	return
-     
 			  
 def buzz():
-# dress this up with color and sound, if there is time
+# contestant made a mistake, so this is the negative response 
+	emoji_buzzer = emoji.emojize(":ogre:") # there is no emoji code for buzzer
+	print(emoji_buzzer)
 	print("BUZZZZZ!!!")
-
-
 	return
 	
 def dingding():
-	
-# dress this up with color and sound
+	# This is dressed up with color and emojis, but sound is not available
+	# through the standard Github Python setups.
+
+	emoji_bell = emoji.emojize(":bell:") # Emoji code for bell
 	print("DING DING DING!!!")
-	print(bell + bell + bell)
+	print(emoji_bell + emoji_bell + emoji_bell)
 	return
 	
 def music_play():
-# dress this up with color and sound, if there is time
-	bell =  "\a"
-	i = 0
+# emoji music characters
+# some are unicode instead of emojis
+	emoji_dee =  emoji.emojize(":green_circle:")
+	emoji_deedee = emoji.emojize(":musical_note:")
+	emoji_dit = emoji.emojize(":blue_circle:")
+	emoji_deeee = emoji.emojize(":musical_notes:")
+	emoji_trumpet = emoji.emojize(":trumpet:")
+	emoji_saxophone = emoji.emojize(":saxophone:")
+
 	for j in range(3):
-		while i <  4 :
-			print("DEE, DIT DEE, DIT DEE DIT")
+		i = 0
+		print(emoji_trumpet,end="")
+		while i <  3 :
+			# play the Wheel of Fortune Song
+			print(emoji_dee, emoji_dit, emoji_dee, emoji_dit,emoji_deedee,"    ",end="")
 			i +=1
-		print(bell)
+		print(emoji_deeee,emoji_saxophone)
 	return
 
 def generate_entries(wheel) :
@@ -93,13 +93,33 @@ def generate_entries(wheel) :
 
 def show_rules():
 	print(CVIOLET + "Here's how to play Wheel of Fortune." + CEND )
-	print("blah blah blah")
+	print(CBLUE)
+	print("You can select your puzzle category from three (3) possible category options \n" 
+	"that are disclosed at the beginning of the Bonus Round. You cannot change your choice "
+	"\nonce made. ")
+	print("\nThere are 24 wedges on the 'Bonus Wheel' - each wedge has its own envelope.\n")
+	print("The value of the bonus wheel envelopes ranges from $40000 to $100000, and there")
+	print("are non-cash prizes as well. You will spin the 'Bonus Wheel' and we will remove the")
+	print("envelope which corresponds to the wedge on which the Bonus Wheel landed.\n")
+	print("The category of the puzzle will be revealed and you will be shown the R, S, T, L, N and Es")
+	print("in the puzzle, after which you will be instructed to choose three additional ")
+	print("consonants and one additional vowel. (Note: If an 'E' is revealed initially, there ")
+	print("may or may not be any additional vowels. However, we will not indicate one way or ")
+	print("another and will still ask for an additional vowel.\n") 
+	print("You will have 5 tries to solve the puzzle. You may give more than one answer. You ")
+	print("can still type letters, or you can give the answer in its entirety without any ")
+	print("additional words between the correct order of the words in the solution.\n ")
+	print("Whether you solve the bonus puzzle or not, I will open the envelope to reveal ")
+	print("what prize you played for in the round.\n")
+	print("Then we will mathematically explore the amounts of money that are associated with ")
+	print("your prize.")
+	input("\nHit enter and we will start the game.  ")
+	print(CEND)
 	return
 
-
-def update_answer(guessarray,puzzle,used_letters,answer) :
+def update_answer(guess_array,puzzle,used_letters,answer) :
 	temp_answer = answer
-	for letter in guessarray :
+	for letter in guess_array :
 		locations = find_all_indexes(puzzle,letter)   # what are the indexes of the letter in puzzle?
 		if len(locations) > 0 :
 			if letter not in used_letters :
@@ -159,23 +179,29 @@ def read_file(in_filename,choices,puzzle) :
 	return puzzle	
 	
 def get_guesses(used_letters,vowels) :
+	#  for user guesses - puzzle can fill in punctuation
+	consos = ["B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Y","Z"] 
+
 	print("You get to guess three consonants and a vowel.")
 	guessletters = 0 
-	guessarray = []
+	guess_array = []
 	while guessletters <  3 :
 		new_guess = input("Guess a consonant that has not been used:  ")
 		new_guess = str(new_guess).upper()
 		if new_guess in used_letters :
 			buzz()
 			print("You used that one already.")	
-		elif new_guess in guessarray  :
+		elif new_guess in guess_array  :
 			buzz()
 			print("You used that one already.")	
 		elif  new_guess in vowels :
 			print("Not yet - just consonants.")
-		else :
+		elif new_guess in consos :
 			guessletters +=1
-			guessarray += new_guess
+			guess_array += new_guess
+		else :
+			buzz()
+			print("That is not a consonant.")	
 	
 	good_guess = False
 	while not good_guess :
@@ -184,15 +210,15 @@ def get_guesses(used_letters,vowels) :
 		if new_guess in used_letters :
 			buzz()
 			print("You used that one already.")	
-		elif new_guess in guessarray  :
+		elif new_guess in guess_array  :
 			buzz()
 			print("You used that one already.")	
 		elif  new_guess not in vowels :
 			print("It has to be a vowel.")
 		else :
 			good_guess = True
-			guessarray += new_guess   # add vowel to list of user letters
-	return guessarray
+			guess_array += new_guess   # add vowel to list of user letters
+	return guess_array
 
 def prize_description (str_prize, int_prize  ) :
 	if isinstance(str_prize, str):

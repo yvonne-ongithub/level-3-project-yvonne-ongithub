@@ -1,77 +1,77 @@
-#Previous to running this program, you need to import a github module by using
+# Previous to running this program, you need to import a github module by using
 #  the following line in the terminal:
 #  pip install git+https://github.com/ChrisBuilds/terminaltexteffects.git
+#  pip install emoji
 
-import csv
-import datetime
+import csv  
+import emoji
 import math
 import random
-import time
+import time 
 
 from codelib import *
 
 from colors import *
-from terminaltexteffects.effects.effect_rings import Rings
-from terminaltexteffects.effects.effect_slide import Slide
-from terminaltexteffects.effects.effect_spotlights import Spotlights
-from terminaltexteffects.effects.effect_rain import Rain
+from datetime import datetime, timezone
+from terminaltexteffects.effects.effect_spray import Spray
 
-bell = "\\a"
-print('\a')
-print("\u1F514")
-from PIL import Image
-
-try:
-    img = Image.open("loudspeaker.jpg")
-    img.show()
-except FileNotFoundError:
-    print("Error: Image file not found.")
-except Exception as e:
-    print(f"An error occurred: {e}")
-
-effect = Spotlights("YourSpotLightTextHere")
-with effect.terminal_output() as terminal:
-    for frame in effect:
-        terminal.print(frame)
-
-effect = Rings("YourRingTextHere")
-with effect.terminal_output() as terminal:
-    for frame in effect:
-        terminal.print(frame)
-
-effect = Rain("YourRainTextHere")
-with effect.terminal_output() as terminal:
-    for frame in effect:
-        terminal.print(frame)
 
 
 """
-Input - input the user's choice of categories and letters
-Math -  add special items to the list, like money based on length of puzzle.
+The following is a list of topics that were covered in class, as described in Canvas.
+It also describes how the topics were used in the program.
+
+Input - Input the user's choice of categories and letters
+Math -  Add special items to the list, like money based on length of puzzle.
 Output - Display fun things on the screen to increase the feel of the game show experience
 Variable - Store user guesses 
 DataCamp - Python Logic, Control Flow and Filtering
-Elif - work through the user's puzzle guesses
-For Loop - fill in the blanks on the screen
-Functions -  random number generator, file handling, screen displays
-If Else - select consonants or select vowels
-Lists - store the choices for the puzzle categories
-While - while the user has not completed guessing the puzzle answer and has not run out of guesses
-CSV Files - read in the choices for each puzzle category and store them in lists
+Elif - Work through the user's puzzle guesses
+For Loop - Fill in the blanks on the screen
+Functions -  Random number generator, file handling, screen displays
+If Else - Select consonants or select vowels
+Lists - Store the choices for the puzzle categories
+While - While the user has not completed guessing the puzzle answer and has not run out of guesses
+CSV Files - Read in the choices for each puzzle category and store them in lists
 """
 
+
+emoji_V = emoji.emojize(":grinning_face:")
+emoji_bell = emoji.emojize(":bell:") # Emoji code for bell
+emoji_buzzer = emoji.emojize(":ogre:") # there is no emoji code for buzzer
+bell = "🛎️"  # another emoji bell
+buzzer = "🚨"
+spraytext = ""
+randomchar = [" \n"]
+
+for j in range(20) : # the text for the simple screen effect 
+	spraytext += "WHEEL OF FORTUNE   "
 
 wheel = ['' for j in range(26)] # Creates a list with 26 empty strings, indexed as 0..25
 
 # initial letters of guess are NSTLR and E
 initial_guess = ["N","S","T","L","R","E"]
 vowels = ["A","E","I","O","U"]
+
+#  for user guesses - puzzle can fill in punctuation
+consos = ["B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Y","Z"] 
 categories = ["Situation Comedies", "Top Places to Visit in America","Fun activities for students at college","Exit"]
 		
 music_play()
-print("Ladies and gentlemen, the star of our show is . . .")  # Output - Display fun things on the screen 
 
-print(CRED + ". . . YOU!  " + CEND) # from file that contains constant colors
+now = datetime.now(timezone.utc)
+formatted_date = now.strftime("%Y-%m-%d")
+
+print("Ladies and gentlemen, it's " + str(now.hour).zfill(2) + ":" + str(now.minute).zfill(2)  + " on " + str(formatted_date) + ", and it's time to play - ")
+ 
+# call a function that I did not write that is not part of the usual Python libraries
+effect = Spray(spraytext) 
+with effect.terminal_output() as terminal:
+    for frame in effect:
+        terminal.print(frame)
+print("And, the star of our show is . . .")  # Output - Display fun things on the screen 
+
+print(CRED + ". . . YOU!  " + CEND) # from file that contains colors as constants
 
 contestant = ""
 while len(contestant) < 1 :
@@ -111,7 +111,7 @@ while play_again :
 		if c_index == 4 :
 			print(CEND)
 
-	number = -1
+	number = -1      # Standard pre-loop initializations
 	in_filename = ""
 	time_to_exit =  False
 	str_number = ""
@@ -163,11 +163,8 @@ while play_again :
 		
 		input("Now, spin the wheel by pressing enter: (a number between 1 and 24 tells us your prize)")
 		prize_slot  = random.randrange(1,25) 
-	
 		prize = wheel[prize_slot]  # select the prize envelope from the bonus round wheel
-		
-		beep(440, 500)
-
+	
 		str_prize = prize  # prizes can be integers or strings
 		int_prize = 0
 		if isinstance(str_prize, str):
@@ -176,13 +173,11 @@ while play_again :
 		else :
 			int_prize = prize
 			
-		print(str_prize,' ', int_prize)
-
 		print("\nOk, I have the envelope.  You can't see what it is.")
 		print("The category you chose was "+ str(categories[number-1]))
 		
 		print("\nOur beautiful assistant, ", end="")
-		print(CGREEN + "Vanna Github" + CEND + ", will display the board for you.")
+		print(CGREEN + emoji_V + " Vanna Github " + emoji_V + CEND + ", will display the board for you.")
 		
 		# set up the board
 		# this piece was originally intended to be code learned from Datacamp,
@@ -202,18 +197,18 @@ while play_again :
 		answer = update_answer(initial_guess,str_puzzle,used_letters,answer)
 		print_board(answer)
 
-		guessarray = []
-		guessarray = get_guesses(used_letters, vowels)
+		guess_array = []
+		guess_array = get_guesses(used_letters, vowels)
 
-		answer = update_answer(guessarray,str_puzzle,used_letters,answer)
+		answer = update_answer(guess_array,str_puzzle,used_letters,answer)
 	
-		print("OK, here are your guesses: " + str(guessarray))
+		print("OK, here are your guesses: " + str(guess_array))
 		
 		print_board(answer)
 		
 		tries = 0
 		solved = False
-		while tries < 5 and not solved :     	# 5 tries to guess a letter that has not been used:
+		while tries < 5 and not solved :     	# The contestant has 5 tries to guess a letter that has not been used
 			new_guess = input("Guess a letter or guess the answer:  ")
 			new_guess = new_guess.upper()
 			tries += 1
@@ -225,6 +220,8 @@ while play_again :
 					dingding()
 					answer = update_answer(new_guess,str_puzzle,used_letters,answer)
 					print_board(answer)
+					if answer == str_puzzle :
+						solved = True
 				else :
 					print("No, that's not in the puzzle.")
 					if new_guess not in used_letters :
@@ -258,7 +255,10 @@ while play_again :
 			print("That's " +  f"${int(salary):,.2f} per guess!!")
 		else :  # too many tries
 			buzz()
+			emoji_lost = emoji.emojize(":disappointed_face:") # Emoji code 
+			print(buzzer, emoji_lost , emoji_lost , emoji_lost, buzzer)
 			print(contestant + ", " + CBLINK  + " You LOST! " + CEND)
+			print(buzzer, emoji_buzzer , emoji_buzzer , emoji_buzzer, buzzer)
 			print("You ran out of time. The answer was " + str_puzzle)
 			print("Your prize would have been ", end="")
 			print(CBLINK + CGREEN , end="")
