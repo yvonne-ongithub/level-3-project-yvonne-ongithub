@@ -37,8 +37,8 @@ def dingding():
 	return
 	
 def music_play():
-# emoji music characters
-# some are unicode instead of emojis
+# emoji music characters are somewhat sparse. Large colored circles are a good substitute
+
 	emoji_dee =  emoji.emojize(":green_circle:")
 	emoji_deedee = emoji.emojize(":musical_note:")
 	emoji_dit = emoji.emojize(":blue_circle:")
@@ -50,7 +50,7 @@ def music_play():
 		i = 0
 		print(emoji_trumpet,end="")
 		while i <  3 :
-			# play the Wheel of Fortune Song
+			# Play the Wheel of Fortune Song
 			print(emoji_dee, emoji_dit, emoji_dee, emoji_dit,emoji_deedee,"    ",end="")
 			i +=1
 		print(emoji_deeee,emoji_saxophone)
@@ -58,7 +58,7 @@ def music_play():
 
 def generate_entries(wheel) :
 # prize money ranges from $40,000 to $100,000,in increments of $3000.  
-# There is also a car, a boat, and a vacation to be given away.
+# There is also a boat, 2 cars, and a vacation to be given away.
 	money = 40000
 	increment = 3000
 	val = 0
@@ -83,7 +83,7 @@ def generate_entries(wheel) :
 	other_prizes = ["SUV", "vacation", "sportscar","speedboat"]
 	op = 0;
 	
-	while val < wheelsize :  
+	while val < wheelsize :  # locate empty places in wheel for non-monetary prizes
 		if wheel[val] == "" :
 			wheel[val] = other_prizes[op]
 			op +=1
@@ -118,12 +118,13 @@ def show_rules():
 	return
 
 def update_answer(guess_array,puzzle,used_letters,answer) :
+	# Update the lists with new letters, previous to populating the board
 	temp_answer = answer
 	for letter in guess_array :
 		locations = find_all_indexes(puzzle,letter)   # what are the indexes of the letter in puzzle?
-		if len(locations) > 0 :
+		if len(locations) > 0 :  # letter found in puzzle
 			if letter not in used_letters :
-				used_letters += letter
+				used_letters += letter   # add the letter to the list of letters that have been used
 			for i in locations :
 				temp_answer = replace_char_list(answer, i, letter)
 				answer = temp_answer
@@ -158,6 +159,8 @@ def mathfun(x,y):
 	return
 
 def replace_char_list(text, index, replacement):
+	# updates the puzzle board with the letters that were correctly guessed
+	# convert the information from a string to a list and back again
     list_text = list(text)
     list_text[index] = replacement
     return "".join(list_text)
@@ -221,6 +224,7 @@ def get_guesses(used_letters,vowels) :
 	return guess_array
 
 def prize_description (str_prize, int_prize  ) :
+	# print description on screen of prizes that are not monetary
 	if isinstance(str_prize, str):
 		if str_prize ==  "vacation" :
 			print("this vacation is a charming visit to Acapulco, worth $30,000!! ")
@@ -257,7 +261,7 @@ def find_all_indexes(main_string, substring):
 	while searching:
 		index = main_string.find(substring, start_index)
 		if index == -1:
-			searching = False  # Substring not found, exit loop
+			searching = False  # Substring not found
 		else :
 			indexes.append(index)
 			start_index = index + 1  # Move to the next position after the found substring
