@@ -1,10 +1,49 @@
+#Previous to running this program, you need to import a github module by using
+#  the following line in the terminal:
+#  pip install git+https://github.com/ChrisBuilds/terminaltexteffects.git
+
 import csv
 import datetime
 import math
 import random
 import time
+
 from codelib import *
+
 from colors import *
+from terminaltexteffects.effects.effect_rings import Rings
+from terminaltexteffects.effects.effect_slide import Slide
+from terminaltexteffects.effects.effect_spotlights import Spotlights
+from terminaltexteffects.effects.effect_rain import Rain
+
+bell = "\\a"
+print('\a')
+print("\u1F514")
+from PIL import Image
+
+try:
+    img = Image.open("loudspeaker.jpg")
+    img.show()
+except FileNotFoundError:
+    print("Error: Image file not found.")
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+effect = Spotlights("YourSpotLightTextHere")
+with effect.terminal_output() as terminal:
+    for frame in effect:
+        terminal.print(frame)
+
+effect = Rings("YourRingTextHere")
+with effect.terminal_output() as terminal:
+    for frame in effect:
+        terminal.print(frame)
+
+effect = Rain("YourRainTextHere")
+with effect.terminal_output() as terminal:
+    for frame in effect:
+        terminal.print(frame)
+
 
 """
 Input - input the user's choice of categories and letters
@@ -20,8 +59,7 @@ Lists - store the choices for the puzzle categories
 While - while the user has not completed guessing the puzzle answer and has not run out of guesses
 CSV Files - read in the choices for each puzzle category and store them in lists
 """
-bell = "\a"
-print('\a')
+
 
 wheel = ['' for j in range(26)] # Creates a list with 26 empty strings, indexed as 0..25
 
@@ -32,7 +70,6 @@ categories = ["Situation Comedies", "Top Places to Visit in America","Fun activi
 		
 music_play()
 print("Ladies and gentlemen, the star of our show is . . .")  # Output - Display fun things on the screen 
-dingpy.ding()
 
 print(CRED + ". . . YOU!  " + CEND) # from file that contains constant colors
 
@@ -129,6 +166,8 @@ while play_again :
 	
 		prize = wheel[prize_slot]  # select the prize envelope from the bonus round wheel
 		
+		beep(440, 500)
+
 		str_prize = prize  # prizes can be integers or strings
 		int_prize = 0
 		if isinstance(str_prize, str):
@@ -203,9 +242,7 @@ while play_again :
 			dingding()
 			print ("YAY! " + contestant + " You have solved the puzzle! You win the prize!")
 			print("The prize is ", end="")
-			import dingpy
-
-			dingpy.ding()
+			
 			if isinstance(str_prize, str):
 				if str_prize.isdigit() :  # only digits in the string makes it an integer
 					print(f"${int_prize}") 

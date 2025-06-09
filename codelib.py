@@ -1,6 +1,8 @@
 import csv
 import random
 import math
+import sounddevice as sd
+import numpy as np
 
 from colors import *
 
@@ -18,14 +20,26 @@ def print_board(answer):
 				print()   # newline on screen
 	print(CEND)
 	return
+
+
+      
+def beep(frequency, duration, sample_rate=44100):
+	t = np.linspace(0, duration/1000, int(sample_rate * duration/1000), False)
+	tone = 0.5 * np.sin(frequency * t * 2 * np.pi)
+	sd.play(tone, sample_rate)
+	sd.wait()
+	return
+     
 			  
 def buzz():
 # dress this up with color and sound, if there is time
 	print("BUZZZZZ!!!")
+
+
 	return
 	
 def dingding():
-	bell =  "\a"
+	
 # dress this up with color and sound
 	print("DING DING DING!!!")
 	print(bell + bell + bell)
