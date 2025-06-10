@@ -102,12 +102,9 @@ pip install python-colored-print
 When in doubt, the full syntax is as follows:
 $ pip install git+https://github.com/ChrisBuilds/terminaltexteffects.git
 
-I did not keep track of most of the installs throughout the quarter, but here are a few that are probably used by this program.
+I did not keep track of most of the installs throughout the quarter, but here are a few that are probably used by this program, regardles of the import statements in the modules.
 
-colorama     
-
-emoji  
-
-numpy
-
-https://github.com/ChrisBuilds/terminaltexteffects.git
+* colorama     
+* emoji  
+* numpy
+* https://github.com/ChrisBuilds/terminaltexteffects.git
