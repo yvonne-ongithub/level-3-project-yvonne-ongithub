@@ -1,6 +1,6 @@
 ### Yvonne Richardson
 ### STEM 103
-### Level 3: final Project
+### Level 3: Final Project
 
 # Wheel of Fortune, the Final Round
 # Team: Yvonne Richardson

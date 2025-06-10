@@ -1,3 +1,9 @@
+# Yvonne Richardson
+# STEM 103
+# Level 3: Final Project
+#
+# Wheel of Fortune, the Final Round
+#
 #  color constants are from
 #  https://stackoverflow.com/questions/287871/how-do-i-print-colored-text-to-the-terminal
 # 

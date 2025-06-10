@@ -1,3 +1,9 @@
+# Yvonne Richardson
+# STEM 103
+# Level 3: Final Project
+#
+# Wheel of Fortune, the Final Round
+
 import csv
 import emoji
 import random

@@ -1,4 +1,10 @@
-# Previous to running this program, you need to import a github module by using
+# Yvonne Richardson
+# STEM 103
+# Level 3: Final Project
+#
+# Wheel of Fortune, the Final Round
+#
+#  Previous to running this program, you need to import a github module by using
 #  the following line in the terminal:
 #  pip install git+https://github.com/ChrisBuilds/terminaltexteffects.git
 #  pip install emoji
