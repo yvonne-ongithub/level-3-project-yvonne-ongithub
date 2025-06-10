@@ -15,6 +15,7 @@ There are two levels to this project.
 * Fun - most games are fun.  Exploration is fun. Games may make the user think that debugging is fun.
 
 ### Demonstrate all of the competencies acquired as a result of being a student in this class (and then some).
+See the Competencies section.
 
 ## PROJECT DESCRIPTION
 The project is similar to the bonus round of the famous game show.  Contestants will select a category and then "spin" the wheel for a random and secret prize.
@@ -48,3 +49,65 @@ CSV Files - read in the choices for each puzzle category and store them in lists
 The plan that guides the implementation is to follow the above specification until the code is complete and fully debugged.  
 
 
+### RESULTS
+The project description is pretty close to the code that I actually wanted to write. It's really easy to plop the human-readable comments into a file and then translate them one line at a time. However, I did have to look up a lot of Python syntax. This style of coding is somewhere between relying on Tooltips with the right-mouse click and looking up the code in a pre-Tooltip paper manual.
+
+Many of these answers might have been found if I had used a debugger that displays the syntax or a link to the correct syntax.  However, locating really good ideas as to how to make my code work is usually beyond the debugger.
+
+I suppose if I had looked long enough, I would have found some examples in the manuals located at w3schools, but sometimes it is useful to see the code in action by studying the snippets that are available online previous to writing your own code. 
+
+#### TESTING
+Here are some details on how I tested my project.  For the most part it is string handling, so there are range checks and numeric checks that ensure that
+inputs are valid.  For example, if a response is required, it cannot have a length of zero. On the other hand, if you have seen the game directions before,
+you can just hit "enter" and the game will continue wihtout displaying the instructions.
+
+There are lists of vowels and consonants to ensure that reqponses are one or the other as required. These are simple loops, so they don't cause a lot of frustration when you get it wrong and cannot get out of the loop. Note that the ampersand ("&") is neither a vowel nor a consonant, even if it is a character within a puzzle answer.
+
+There are similar checks for integers vs. strings. This was useful when working with a list that contains both of them and has to treat them different ways.
+
+### WHAT I LEARNED
+
+There is a worldwide community of Python developers that post code all over the Internet. Not all of them are right, and even the right answers are not always compatible. I explored several ideas for code constructs before I found some that I liked that worked. 
+
+Due to the design constraints, there was nothing that was required that had to be removed from the project.  However, in terms of dressing up a working project, I was able to verify that the sound libraries are incompatible with github.com and the terminal as it was used.
+
+Other items that I learned were: How to print emojis, how to use the Python random number generator, and how to print color on the screen.
+
+#### CREDITS
+
+My general guideline when surfing the Internet for the syntax that will realize my code is to bookmark every site that I think will help.  This is important because not every piece of code you want works, or is usable, or is compatible with Python and its libraries. For example, there is a Python library that can be used to display emojis.  However, there are a lot of emojis that are not in the Python library, and many Internet sites do not spell them correctly - "blue circle" is not "blue_circle". This was a bit of a challenge because the expectation is that if it is posted, it should work.  However, many of the posts had to do with Unicode or printing characters in a way that is not associated with the Python emoji library.
+
+So, without further ado, the following is a list of sites that I used to develop this project.
+
+https://www.w3schools.com/python
+
+https://www.boattrader.com/boat/2025-tahoe-t16-9788171/
+
+https://blog.enterprisedna.co/python-print-without-newline-easy-step-by-step-guide/#:~:text=To%20print%20without%20a%20new,%22)
+
+https://www.digitalocean.com/community/tutorials/python-string-substring
+
+https://stackoverflow.com/questions/287871/how-do-i-print-colored-text-to-the-terminal
+
+https://en.wikipedia.org/wiki/ANSI_escape_code#Colors
+
+https://www.wheeloffortunelive.com/rules
+
+### NEW PYTHON FEATURES - INSTALLS
+
+There are a number of Python libraries that were used in the development of this project, many of which are not a part of the original language.  We are familiar with imports like datetime or random, but when using code that is outside of the Python libraries, you must use an install in addition to the imports.
+Many of the installs can be accomplished using the following syntax.
+pip install python-colored-print
+
+When in doubt, the full syntax is as follows:
+$ pip install git+https://github.com/ChrisBuilds/terminaltexteffects.git
+
+I did not keep track of most of the installs throughout the quarter, but here are a few that are probably used by this program.
+
+colorama     
+
+emoji  
+
+numpy
+
+https://github.com/ChrisBuilds/terminaltexteffects.git
