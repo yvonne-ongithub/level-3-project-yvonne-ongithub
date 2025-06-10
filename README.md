@@ -71,11 +71,14 @@ There is a worldwide community of Python developers that post code all over the 
 
 Due to the design constraints, there was nothing that was required that had to be removed from the project.  However, in terms of dressing up a working project, I was able to verify that the sound libraries are incompatible with github.com and the terminal as it was used.
 
+Other items that I learned were: How to print emojis, how to use the Python random number generator, and how to print color on the screen.
+
 #### CREDITS
 
-My general guideline when surfing the Internet for the syntax that will realize my code is to bookmark every site that I think will help.  This is important because not every piece of code you want works, or is usable, or is compatible with Python and its libraries. For example, there is a Python library that can be used to display emojis.  However, there are a lot of emojis that are not in the Python library, and many Internet sites do not spell them correctly - "blue circle" is not "blue_circle". 
+My general guideline when surfing the Internet for the syntax that will realize my code is to bookmark every site that I think will help.  This is important because not every piece of code you want works, or is usable, or is compatible with Python and its libraries. For example, there is a Python library that can be used to display emojis.  However, there are a lot of emojis that are not in the Python library, and many Internet sites do not spell them correctly - "blue circle" is not "blue_circle". This was a bit of a challenge because the expectation is that if it is posted, it should work.  However, many of the posts had to do with Unicode or printing characters in a way that is not associated with the Python emoji library.
 
 So, without further ado, the following is a list of sites that I used to develop this project.
+
 https://www.w3schools.com/python
 
 https://www.boattrader.com/boat/2025-tahoe-t16-9788171/
@@ -83,6 +86,8 @@ https://www.boattrader.com/boat/2025-tahoe-t16-9788171/
 https://blog.enterprisedna.co/python-print-without-newline-easy-step-by-step-guide/#:~:text=To%20print%20without%20a%20new,%22)
 
 https://www.digitalocean.com/community/tutorials/python-string-substring
+
+https://stackoverflow.com/questions/287871/how-do-i-print-colored-text-to-the-terminal
 
 https://en.wikipedia.org/wiki/ANSI_escape_code#Colors
 
@@ -97,4 +102,12 @@ pip install python-colored-print
 When in doubt, the full syntax is as follows:
 $ pip install git+https://github.com/ChrisBuilds/terminaltexteffects.git
 
+I did not keep track of most of the installs throughout the quarter, but here are a few that are probably used by this program.
 
+colorama     
+
+emoji  
+
+numpy
+
+https://github.com/ChrisBuilds/terminaltexteffects.git
